@@ -15,6 +15,7 @@ def create_response(Message, Client, model, tools = [] ,tool_choice="required", 
         tool_choice=tool_choice,
         stream=stream
     )
+    print("Manus Thought:")
     Agent_Content = ''
     Agent_Tool_Calls = []
     for word in response:
@@ -33,7 +34,7 @@ def tackle_tool_calls(assistant_tool_calls):
         
         for tool in assistant_tool_calls:
             tool.function.name=tool.function.name.strip()
-            if tool.function.name == "Task_Finish":
+            if tool.function.name == "Task_Break":
                 print("|- Task finished.")
                 return False
 
@@ -55,20 +56,18 @@ def tackle_tool_calls(assistant_tool_calls):
                 print('|-  This tool not found:\"', tool.function.name,"\"")
     else:
         print('Manus didn\'t call any tools.')
-    
+
     return True
     
 load_prompts(Messages)
-Messages.append({'role':'user','content':'请用python在写一个输出helloworld的程序，并测试。'})
-# Messages.append({'role':'user', 'content':'您在一个任务循环中运行，通过哪些步骤迭代完成任务？'})
-# print(Tools_List)
+Messages.append({'role':'user','content':'请用python写一个贪吃蛇游戏'})
 
 while True:
 
     Agent_Content, Agent_Tool_Calls = create_response(
         Message=Messages,
-        Client=Main_Client,
-        model=Main_Model_Name,
+        Client=OpenAI_Client,
+        model=Model_Name,
         tools=Tools_List,
         tool_choice="auto",
         stream=True

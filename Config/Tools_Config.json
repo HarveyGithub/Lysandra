@@ -1,9 +1,65 @@
 {
-    "Task_Finish": {
+    "Notify_User": {
         "type": "function",
         "function": {
-            "name": "Task_Finish",
-            "description": "通知用户任务已完成，用于通知用户任务已完成或执行成功。"
+            "name": "Notify_User",
+            "description": "向用户发送消息，无需用户回应。用于确认收到消息、提供进度更新或解释方法变更。",
+            "parameters": {
+                "type": "object",
+                "properties": {
+                    "content": {
+                        "type": "string",
+                        "description": "要发送的消息内容。"
+                    },
+                    "attachment": {
+                        "type": "list",
+                        "description": "（可选）向用户展示的附件，支持文件的链接，网站的链接等。填入列表，每个元素都是string类型。"
+                    }
+                },
+                "required": ["content"]
+            }
+        }
+    },
+    "Notify_User_Finish": {
+        "type": "function",
+        "function": {
+            "name": "Notify_User_Finish",
+            "description": "向用户发送消息。用于告知用户任务已完成，等待新的任务。",
+            "parameters": {
+                "type": "object",
+                "properties": {
+                    "content": {
+                        "type": "string",
+                        "description": "要发送的消息内容。"
+                    },
+                    "attachment": {
+                        "type": "list",
+                        "description": "（可选）最终要向用户展示的附件，支持文件的链接，网站的链接等。填入列表，每个元素都是string类型。"
+                    }
+                },
+                "required": ["content"]
+            }
+        }
+    },
+    "Ask_User": {
+        "type": "function",
+        "function": {
+            "name": "Ask_User",
+            "description": "向用户发送消息，需要用户回应。用于请求澄清需求、请求确认或收集其他信息。",
+            "parameters": {
+                "type": "object",
+                "properties": {
+                    "content": {
+                        "type": "string",
+                        "description": "要发送的消息内容。"
+                    },
+                    "attachment": {
+                        "type": "list",
+                        "description": "（可选）向用户展示的附件，支持文件的链接，网站的链接等。填入列表，每个元素都是string类型。"
+                    }
+                },
+                "required": ["content"]
+            }
         }
     },
     "Read_File": {

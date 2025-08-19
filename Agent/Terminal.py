@@ -1,6 +1,5 @@
 import pexpect
 import threading
-import time
 
 class TerminalManager:
     def __init__(self):
@@ -90,31 +89,3 @@ class TerminalManager:
             del self.buffers[terminal_id]
             del self.locks[terminal_id]
         return f"终端 {terminal_id} 已关闭"
-
-def Send_Command(command, terminal_id, dir, manager: TerminalManager):
-    if terminal_id not in manager.terminals:
-        manager.create_terminal(terminal_id)
-        manager.send_command(terminal_id, "conda init && conda activate Manus_Sandbox")
-    manager.send_command(terminal_id, "cd " + dir)
-    manager.send_command(terminal_id, command)
-    time.sleep(2)
-    output = manager.get_output(terminal_id)
-    return "终端输出:\n" + output
-
-def View_Terminal(terminal_id, manager: TerminalManager):
-    if terminal_id not in manager.terminals:
-        return ValueError(f"终端 {terminal_id} 不存在")
-    output = manager.get_output(terminal_id)
-    return "终端输出:\n" + output
-
-def Send_Keys(keys, terminal_id, manager: TerminalManager, end_newline=False):
-    if terminal_id not in manager.terminals:
-        manager.create_terminal(terminal_id)
-    manager.send_keys(terminal_id, keys)
-    time.sleep(2)
-    output = manager.get_output(terminal_id)
-    return "终端输出:\n" + output
-
-def Kill_Terminal(terminal_id, manager: TerminalManager):
-    manager.close_terminal(terminal_id)
-    return f"终端 {terminal_id} 已关闭"

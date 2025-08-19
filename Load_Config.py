@@ -18,12 +18,12 @@ def load_config(json_path):
 
 config = load_config('./Config/model_config.json')
 
-Main_Client = OpenAI(
-    api_key=config["Main_Model"]["api_key"],
-    base_url=config["Main_Model"]["base_url"],
+OpenAI_Client = OpenAI(
+    api_key=config["api_key"],
+    base_url=config["base_url"],
 )
 
-Main_Model_Name=config["Main_Model"]["Model_Name"]
+Model_Name=config["Model_Name"]
 
 Tools_Config = load_config('./Config/Tools_Config.json')
 
