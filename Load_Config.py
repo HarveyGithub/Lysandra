@@ -1,6 +1,7 @@
-# from Tools.Tools import *
 from Tools.File_Operation import *
+from Tools.Message_User import *
 from Tools.Terminal import *
+
 from openai import OpenAI
 import json
 import os
@@ -38,5 +39,8 @@ Tools_Mapping={
     "Send_Command": Send_Command,
     "Send_Keys": Send_Keys,
     "Kill_Terminal": Kill_Terminal,
-    "View_Terminal": View_Terminal
+    "View_Terminal": View_Terminal,
+    "Notify_User": Notify_User,
+    "Notify_User_Finish": Notify_User_Finish,
+    "Ask_User": Ask_User
 }

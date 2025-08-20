@@ -24,7 +24,7 @@
         "type": "function",
         "function": {
             "name": "Notify_User_Finish",
-            "description": "向用户发送消息。用于告知用户任务已完成，等待新的任务。",
+            "description": "向用户发送消息。用于告知用户任务已完成，交付结果，进入空闲状态，等待新任务（在任务完成后调用此工具（Notify_User_Finish），而非Notify_User）",
             "parameters": {
                 "type": "object",
                 "properties": {
@@ -145,7 +145,7 @@
         "type": "function",
         "function": {
             "name": "Send_Command",
-            "description": "在指定的shell会话中执行命令。用于运行代码、安装软件包或管理文件。",
+            "description": "在指定的shell会话中执行命令。用于运行代码、安装软件包或管理文件。（如果需要，请记得在命令前加上sudo）",
             "parameters": {
                 "type": "object",
                 "properties": {
@@ -166,11 +166,53 @@
             }
         }
     },
+    "Send_Keys": {
+        "type": "function",
+        "function": {
+            "name": "Send_Keys",
+            "description": "向指定Terminal中的正在运行的进程发送键盘输入。用于与正在运行的进程交互。（非必要，请勿使用）",
+            "parameters": {
+                "type": "object",
+                "properties": {
+                    "keys": {
+                        "type": "string",
+                        "description": "要发送的键盘输入。"
+                    },
+                    "terminal_id": {
+                        "type": "string",
+                        "description": "（必填）目标终端的唯一ID。"
+                    },
+                    "end_newline": {
+                        "type": "boolean",
+                        "description": "（可选）是否在发送输入后添加换行符，默认为false。"
+                    }
+                },
+                "required": ["keys", "terminal_id"]
+            }
+        }
+    },
     "View_Terminal": {
         "type": "function",
         "function": {
             "name": "View_Terminal",
             "description": "查看指定Terminal的输出内容的内容。用于检查命令执行结果或监控输出。",
+            "parameters": {
+                "type": "object",
+                "properties": {
+                    "terminal_id": {
+                        "type": "string",
+                        "description": "（必填）目标终端的唯一ID。"
+                    }
+                },
+                "required": ["terminal_id"]
+            }
+        }
+    },
+    "Kill_Terminal": {
+        "type": "function",
+        "function": {
+            "name": "Kill_Terminal",
+            "description": "终止指定Terminal的进程。用于停止长时间运行的进程或处理卡死的命令。",
             "parameters": {
                 "type": "object",
                 "properties": {
