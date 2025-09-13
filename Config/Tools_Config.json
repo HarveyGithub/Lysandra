@@ -187,7 +187,7 @@
         "type": "function",
         "function": {
             "name": "idle",
-            "description": "When you have completed all the current tasks, invoke this tool and wait for the user to provide a new task.",
+            "description": "A special tool, indicating that you have completed all tasks and are about to enter a idle state.",
             "parameters": {
                 "type": "object"
             }
