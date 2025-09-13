@@ -1,0 +1,196 @@
+{
+    "Notify_User": {
+        "type": "function",
+        "function": {
+            "name": "Notify_User",
+            "description": "Send a message to the user without requiring a response. Used to confirm receipt, provide progress updates, or explain method changes.",
+            "parameters": {
+                "type": "object",
+                "properties": {
+                    "content": {
+                        "type": "string",
+                        "description": "The message content to send."
+                    },
+                    "attachment": {
+                        "type": "array",
+                        "description": "(Optional) Attachments to show the user, such as file links, website links, etc. Enter as a list where each element is a string."
+                    }
+                },
+                "required": ["content"]
+            }
+        }
+    },
+    "Ask_User": {
+        "type": "function",
+        "function": {
+            "name": "Ask_User",
+            "description": "Send a message to the user that requires a response. Used to request clarification, ask for confirmation, or collect additional information.",
+            "parameters": {
+                "type": "object",
+                "properties": {
+                    "content": {
+                        "type": "string",
+                        "description": "The message content to send."
+                    },
+                    "attachment": {
+                        "type": "array",
+                        "description": "(Optional) Attachments to show the user, such as file links, website links, etc. Enter as a list where each element is a string."
+                    }
+                },
+                "required": ["content"]
+            }
+        }
+    },
+    "Read_File": {
+        "type": "function",
+        "function": {
+            "name": "Read_File",
+            "description": "Read file content. Used to view file contents, analyze logs, or read configuration files.",
+            "parameters": {
+                "type": "object",
+                "properties": {
+                    "file_path": {
+                        "type": "string",
+                        "description": "The file path, must be an absolute path (starting with /)."
+                    },
+                    "start_line": {
+                        "type": "integer",
+                        "description": "(Optional) The starting line number, beginning at 1."
+                    },
+                    "end_line": {
+                        "type": "integer",
+                        "description": "(Optional) The ending line number, beginning at 1."
+                    }
+                },
+                "required": ["file_path"]
+            }
+        }
+    },
+    "Write_File": {
+        "type": "function",
+        "function": {
+            "name": "Write_File",
+            "description": "Overwrite or append content to a file. Used to create new files, append content, or modify existing files.",
+            "parameters": {
+                "type": "object",
+                "properties": {
+                    "file_path": {
+                        "type": "string",
+                        "description": "The file path, must be an absolute path (starting with /)."
+                    },
+                    "content": {
+                        "type": "string",
+                        "description": "The text content to write."
+                    },
+                    "append": {
+                        "type": "boolean",
+                        "description": "(Optional) Whether to use append mode, default is false."
+                    },
+                    "front_newline": {
+                        "type": "boolean",
+                        "description": "(Optional) Whether to add a newline before the written content, default is false."
+                    },
+                    "end_newline": {
+                        "type": "boolean",
+                        "description": "(Optional) Whether to add a newline after the written content, default is false."
+                    }
+                },
+                "required": ["file_path", "content"]
+            }
+        }
+    },
+    "Send_Command": {
+        "type": "function",
+        "function": {
+            "name": "Send_Command",
+            "description": "Execute a command in the specified shell session. Used to run code, install packages, or manage files. (If necessary, remember to prefix with sudo.)",
+            "parameters": {
+                "type": "object",
+                "properties": {
+                    "command": {
+                        "type": "string",
+                        "description": "The command to execute."
+                    },
+                    "terminal_id": {
+                        "type": "string",
+                        "description": "(Required) The unique ID of the target terminal."
+                    },
+                    "dir": {
+                        "type": "string",
+                        "description": "The working directory where the command is executed, must be an absolute path (starting with /)."
+                    }
+                },
+                "required": ["command", "terminal_id", "dir"]
+            }
+        }
+    },
+    "Send_Keys": {
+        "type": "function",
+        "function": {
+            "name": "Send_Keys",
+            "description": "Send keyboard input to a running process in the specified terminal. Used to interact with processes. (Avoid unless necessary.)",
+            "parameters": {
+                "type": "object",
+                "properties": {
+                    "keys": {
+                        "type": "string",
+                        "description": "The keyboard input to send."
+                    },
+                    "terminal_id": {
+                        "type": "string",
+                        "description": "(Required) The unique ID of the target terminal."
+                    },
+                    "end_newline": {
+                        "type": "boolean",
+                        "description": "(Optional) Whether to add a newline after the input, default is false."
+                    }
+                },
+                "required": ["keys", "terminal_id"]
+            }
+        }
+    },
+    "View_Terminal": {
+        "type": "function",
+        "function": {
+            "name": "View_Terminal",
+            "description": "View the output content of the specified terminal. Used to check command results or monitor output.",
+            "parameters": {
+                "type": "object",
+                "properties": {
+                    "terminal_id": {
+                        "type": "string",
+                        "description": "(Required) The unique ID of the target terminal."
+                    }
+                },
+                "required": ["terminal_id"]
+            }
+        }
+    },
+    "Kill_Terminal": {
+        "type": "function",
+        "function": {
+            "name": "Kill_Terminal",
+            "description": "Terminate the process in the specified terminal. Used to stop long-running processes or handle stuck commands.",
+            "parameters": {
+                "type": "object",
+                "properties": {
+                    "terminal_id": {
+                        "type": "string",
+                        "description": "(Required) The unique ID of the target terminal."
+                    }
+                },
+                "required": ["terminal_id"]
+            }
+        }
+    },
+    "idle": {
+        "type": "function",
+        "function": {
+            "name": "idle",
+            "description": "When you have completed all the current tasks, invoke this tool and wait for the user to provide a new task.",
+            "parameters": {
+                "type": "object"
+            }
+        }
+    }
+}

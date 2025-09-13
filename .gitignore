@@ -1,0 +1,14 @@
+*.pyc
+__pycache__/
+Tools/__pycache__/
+Config/model_config.json
+Config/model_config copy.json
+.python-version
+.vscode/
+.cph-ng/
+.venv/
+.env/
+WorkSpace/
+Test/
+Manus_Official_Agent_Prompts/
+test.txt
