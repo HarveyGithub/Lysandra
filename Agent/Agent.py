@@ -9,7 +9,7 @@ class Agent():
         self.Client = OpenAI_Client
         self.Model = Model_Name
         self.Messages = []
-        load_prompts(self.Messages)
+        # load_prompts(self.Messages)
     
     def create_response(self, tools = [] ,tool_choice="auto", temperature=0.2, top_p = 0.7):
         # print(tools)

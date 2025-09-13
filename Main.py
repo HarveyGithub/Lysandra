@@ -4,4 +4,4 @@ if __name__ == '__main__':
     agent = Agent()
     agent.run()
     
-# 请用写一个自述文件，放在/home/harvey/LysandraT
+# 结合项目内容，给这个仓库写一个README.md文件，（/home/noi/项目/Lysandra/）
