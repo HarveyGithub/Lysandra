@@ -9,10 +9,9 @@ class Agent():
         self.Client = OpenAI_Client
         self.Model = Model_Name
         self.Messages = []
-        # load_prompts(self.Messages)
+        load_prompts(self.Messages)
     
     def create_response(self, tools = [] ,tool_choice="auto", temperature=0.2, top_p = 0.7):
-        # print(tools)
         response = self.Client.chat.completions.create(
             model=self.Model,
             messages=self.Messages,
@@ -26,10 +25,8 @@ class Agent():
         llm_content = ''
         llm_tool_calls = []
         for word in response:
-            if word.choices[0].delta.content:
-                print(word.choices[0].delta.content, end='', flush=True)
-            # else:
-            #     print(word.choices[0].delta.tool_calls, end='', flush=True)
+            # if word.choices[0].delta.content:
+            #     print(word.choices[0].delta.content, end='', flush=True)
             if word.choices[0].delta.content:
                 llm_content += word.choices[0].delta.content
             if word.choices[0].delta.tool_calls:
@@ -54,7 +51,6 @@ class Agent():
                 
                 if tool_to_call := self.Tools.get(tool.function.name):
                     print(f"|- Calling tool: {tool.function.name}", flush=True)
-                    print(f"|  with arguments: {tool}", flush=True)
                     
                     arguments_dict = json.loads(tool.function.arguments)
                     
@@ -64,10 +60,8 @@ class Agent():
                         else:
                             output = tool_to_call(**arguments_dict)
                     except Exception as e:
-                        print(f"|  Error: {e}")
                         output = f"Error: {e}"
                     
-                    print(f"|  Output: {output}", flush=True)
                     self.Messages.append({
                         'tool_call_id': tool.id,
                         'role': 'tool',
@@ -91,7 +85,6 @@ class Agent():
             'role': 'user',
             'content': user_task
         })
-        print("start conversation...", flush=True)
         while True:
             llm_content, llm_tool_calls = self.create_response(
                 tools=self.Tools_List,

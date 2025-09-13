@@ -4,4 +4,4 @@ if __name__ == '__main__':
     agent = Agent()
     agent.run()
     
-# 结合项目内容，给这个仓库写一个README.md文件，（/home/noi/项目/Lysandra/）
+# 用python写一个贪吃蛇游戏，保存在/home/harvey/LysandraT目录中
