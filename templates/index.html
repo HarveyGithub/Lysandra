@@ -1,0 +1,200 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Lysandra Web Interface</title>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            max-width: 800px;
+            margin: 0 auto;
+            padding: 20px;
+            background-color: #f5f5f5;
+        }
+        .chat-container {
+            background-color: white;
+            border-radius: 10px;
+            padding: 20px;
+            box-shadow: 0 2px 10px rgba(0,0,0,0.1);
+        }
+        .messages {
+            height: 400px;
+            overflow-y: auto;
+            border: 1px solid #ddd;
+            padding: 10px;
+            margin-bottom: 20px;
+            border-radius: 5px;
+        }
+        .message {
+            margin-bottom: 15px;
+            padding: 10px;
+            border-radius: 5px;
+        }
+        .user-message {
+            background-color: #e3f2fd;
+            text-align: right;
+        }
+        .ai-message {
+            background-color: #f5f5f5;
+        }
+        .input-container {
+            display: flex;
+            gap: 10px;
+        }
+        #message-input {
+            flex: 1;
+            padding: 10px;
+            border: 1px solid #ddd;
+            border-radius: 5px;
+        }
+        button {
+            padding: 10px 20px;
+            background-color: #2196f3;
+            color: white;
+            border: none;
+            border-radius: 5px;
+            cursor: pointer;
+        }
+        button:hover {
+            background-color: #1976d2;
+        }
+        button:disabled {
+            background-color: #bbdefb;
+            cursor: not-allowed;
+        }
+        .status {
+            text-align: center;
+            margin-bottom: 10px;
+            color: #666;
+        }
+    </style>
+</head>
+<body>
+    <div class="chat-container">
+        <h1>Lysandra Web Interface</h1>
+        <div class="status" id="status">Agent未启动</div>
+        <div class="messages" id="messages"></div>
+        <div class="input-container">
+            <input type="text" id="message-input" placeholder="输入您的消息..." disabled>
+            <button id="start-btn">启动Agent</button>
+            <button id="send-btn" disabled>发送</button>
+        </div>
+    </div>
+
+    <script>
+        // 获取DOM元素
+        const messagesDiv = document.getElementById('messages');
+        const messageInput = document.getElementById('message-input');
+        const startBtn = document.getElementById('start-btn');
+        const sendBtn = document.getElementById('send-btn');
+        const statusDiv = document.getElementById('status');
+
+        // 启动Agent
+        startBtn.addEventListener('click', async () => {
+            try {
+                const response = await fetch('/start_agent', {
+                    method: 'POST',
+                    headers: {
+                        'Content-Type': 'application/json'
+                    }
+                });
+                const data = await response.json();
+                if (data.status === 'success') {
+                    statusDiv.textContent = 'Agent已启动';
+                    messageInput.disabled = false;
+                    sendBtn.disabled = false;
+                    startBtn.disabled = true;
+                } else {
+                    alert('启动Agent失败: ' + data.message);
+                }
+            } catch (error) {
+                console.error('Error:', error);
+                alert('启动Agent时发生错误');
+            }
+        });
+
+        // 发送消息
+        sendBtn.addEventListener('click', sendMessage);
+        messageInput.addEventListener('keypress', (e) => {
+            if (e.key === 'Enter') {
+                sendMessage();
+            }
+        });
+
+        async function sendMessage() {
+            const message = messageInput.value.trim();
+            if (!message) return;
+
+            // 添加用户消息到界面
+            addMessage('user', message);
+            messageInput.value = '';
+
+            try {
+                const response = await fetch('/send_message', {
+                    method: 'POST',
+                    headers: {
+                        'Content-Type': 'application/json'
+                    },
+                    body: JSON.stringify({message: message})
+                });
+                
+                // 检查响应状态
+                if (!response.ok) {
+                    const errorText = await response.text();
+                    throw new Error(`HTTP error! status: ${response.status}, body: ${errorText}`);
+                }
+                
+                const data = await response.json();
+                if (data.status === 'success') {
+                    // 添加AI响应到界面
+                    addMessage('ai', data.ai_response);
+                } else {
+                    alert('发送消息失败: ' + data.message);
+                }
+            } catch (error) {
+                console.error('Error:', error);
+                alert('发送消息时发生错误: ' + error.message);
+            }
+        }
+
+        // 添加消息到界面
+        function addMessage(role, content) {
+            const messageDiv = document.createElement('div');
+            messageDiv.className = `message ${role}-message`;
+            messageDiv.textContent = content;
+            messagesDiv.appendChild(messageDiv);
+            messagesDiv.scrollTop = messagesDiv.scrollHeight;
+        }
+
+        // 定期获取消息历史
+        setInterval(async () => {
+            try {
+                const response = await fetch('/get_messages');
+                
+                // 检查响应状态
+                if (!response.ok) {
+                    const errorText = await response.text();
+                    throw new Error(`HTTP error! status: ${response.status}, body: ${errorText}`);
+                }
+                
+                const data = await response.json();
+                if (data.messages) {
+                    // 清空消息区域
+                    messagesDiv.innerHTML = '';
+                    // 添加所有消息到界面
+                    data.messages.forEach(msg => {
+                        if (msg.role === 'user') {
+                            addMessage('user', msg.content);
+                        } else if (msg.role === 'assistant') {
+                            addMessage('ai', msg.content);
+                        }
+                    });
+                }
+            } catch (error) {
+                console.error('Error fetching messages:', error);
+            }
+        }, 5000);
+    </script>
+</body>
+</html>
