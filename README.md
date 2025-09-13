@@ -44,8 +44,8 @@ Lysandra/
 ### 1. 环境准备
 
 ```bash
-# 克隆仓库（示例）
-git clone https://github.com/your-org/Lysandra.git
+# 克隆仓库
+git clone https://github.com/HarveyGithub/Lysandra.git
 cd Lysandra
 
 # 建议使用 virtualenv/conda 创建独立环境
@@ -81,7 +81,7 @@ python Main.py
 程序会提示输入任务，例如：
 
 ```
-请输入任务: 帮我在当前目录下创建一个 README 并写入项目简介。
+请输入任务: 帮我在当前目录下创建一个HelloWorld.py
 ```
 
 Lysandra 将自动调用 `File_Operation`、`Notify_User` 等工具完成任务，并在完成后输出结果。
